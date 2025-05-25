@@ -1,0 +1,68 @@
+Reading dataframe
+```{r}
+dados <- read.csv("tempo.csv", sep = ";", na.strings = "", stringsAsFactors = TRUE)
+summary(dados)
+View(head(dados))
+View(tail(dados))
+```
+
+Renaming columns
+```{r}
+colnames(dados) <- c("Weather", "Temperature", "Humidity", "Wind", "PlayGame")
+colnames(dados)
+```
+Exploring Weather Rows - Wrong Weather Factor (1)
+```{r}
+summary(dados$Weather)
+dados$Weather <- as.character(dados$Weather)
+dados$Weather[dados$Weather == "sol"] <- "Sunny"
+dados$Weather[dados$Weather == "nublado"] <- "Cloudy"
+dados$Weather[dados$Weather == "chuva"] <- "Rainy"
+dados$Weather <- factor(dados$Weather)
+```
+Exploring Temperature Data - 130 ~ 130 F | Outlier (1)
+```{r}
+View(head(dados))
+counts <- table(dados$Temperature)
+counts
+summary(dados$Temperature)
+boxplot(dados$Temperature, outline = FALSE)
+hist(dados$Temperature)
+```
+Exploring Humidity Data - 0 ~ 100 | NA's (1), Outlier (1)
+```{r}
+summary(dados$Humidity)
+boxplot(dados$Humidity)
+hist(dados$Humidity)
+```
+Exploring Wind Data - NA's (1)
+```{r}
+summary(dados$Wind)
+```
+Exploring PlayGame Data
+```{r}
+summary(dados$PlayGame)
+dados$PlayGame <- as.character(dados$PlayGame)
+dados$PlayGame[dados$PlayGame == "sim"] <- "Yes"
+dados$PlayGame[dados$PlayGame == "nao"] <- "No"
+dados$PlayGame <- factor(dados$PlayGame)
+dados$PlayGame
+```
+Data Cleaning - Weather | Wrong Weather Factor (1) | two modals -> decision: remove
+```{r}
+unique(dados$Weather)
+summary(dados$Weather)
+dados <- subset(dados, Weather %in% c("Sunny", "Cloudy", "Rainy"))
+dados$Weather <- factor(dados$Weather)
+```
+Data Cleaning - Temperature | Outlier | Max Value: 130 (1)
+```{r}
+summary(dados$Temperature)
+dados$Temperature[dados$Temperature > 130] <- median(dados$Temperature, na.rm = TRUE)
+```
+Data Cleaning - Humidity | Outlier (1) | Max Value: 100
+```{r}
+summary(dados$Humidity)
+dados$Humidity[dados$Humidity > 100] <- median(dados$Humidity, na.rm = TRUE)
+dados <- dados[!is.na(dados$Humidity), ]
+```
