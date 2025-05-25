@@ -48,12 +48,13 @@ data$PlayGame[data$PlayGame == "nao"] <- "No"
 data$PlayGame <- factor(data$PlayGame)
 data$PlayGame
 ```
-Data Cleaning - Weather | Wrong Weather Factor (1) | two modals -> decision: remove
+Data Cleaning - Weather | Wrong Weather Factor (1)
 ```{r}
 unique(data$Weather)
 summary(data$Weather)
-data <- subset(data, Weather %in% c("Sunny", "Cloudy", "Rainy"))
+data$Weather[!data$Weather %in% c("Sunny", "Cloudy", "Rainy")] <- "Sunny"
 data$Weather <- factor(data$Weather)
+summary(data$Weather)
 ```
 Data Cleaning - Temperature | Outlier | Max Value: 130 (1)
 ```{r}
