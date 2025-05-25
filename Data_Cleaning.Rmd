@@ -1,6 +1,6 @@
 Reading dataframe
 ```{r}
-dados <- read.csv("tempo.csv", sep = ";", na.strings = "", stringsAsFactors = TRUE)
+dados <- read.csv("weather.csv", sep = ";", na.strings = "", stringsAsFactors = TRUE)
 summary(dados)
 View(head(dados))
 View(tail(dados))
