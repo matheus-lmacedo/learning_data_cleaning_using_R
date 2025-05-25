@@ -1,68 +1,68 @@
 Reading dataframe
 ```{r}
-dados <- read.csv("weather.csv", sep = ";", na.strings = "", stringsAsFactors = TRUE)
-summary(dados)
-View(head(dados))
-View(tail(dados))
+data <- read.csv("weather.csv", sep = ";", na.strings = "", stringsAsFactors = TRUE)
+summary(data)
+View(head(data))
+View(tail(data))
 ```
 
 Renaming columns
 ```{r}
-colnames(dados) <- c("Weather", "Temperature", "Humidity", "Wind", "PlayGame")
-colnames(dados)
+colnames(data) <- c("Weather", "Temperature", "Humidity", "Wind", "PlayGame")
+colnames(data)
 ```
 Exploring Weather Rows - Wrong Weather Factor (1)
 ```{r}
-summary(dados$Weather)
-dados$Weather <- as.character(dados$Weather)
-dados$Weather[dados$Weather == "sol"] <- "Sunny"
-dados$Weather[dados$Weather == "nublado"] <- "Cloudy"
-dados$Weather[dados$Weather == "chuva"] <- "Rainy"
-dados$Weather <- factor(dados$Weather)
+summary(data$Weather)
+data$Weather <- as.character(data$Weather)
+data$Weather[data$Weather == "sol"] <- "Sunny"
+data$Weather[data$Weather == "nublado"] <- "Cloudy"
+data$Weather[data$Weather == "chuva"] <- "Rainy"
+data$Weather <- factor(data$Weather)
 ```
 Exploring Temperature Data - 130 ~ 130 F | Outlier (1)
 ```{r}
-View(head(dados))
-counts <- table(dados$Temperature)
+View(head(data))
+counts <- table(data$Temperature)
 counts
-summary(dados$Temperature)
-boxplot(dados$Temperature, outline = FALSE)
-hist(dados$Temperature)
+summary(data$Temperature)
+boxplot(data$Temperature, outline = FALSE)
+hist(data$Temperature)
 ```
 Exploring Humidity Data - 0 ~ 100 | NA's (1), Outlier (1)
 ```{r}
-summary(dados$Humidity)
-boxplot(dados$Humidity)
-hist(dados$Humidity)
+summary(data$Humidity)
+boxplot(data$Humidity)
+hist(data$Humidity)
 ```
 Exploring Wind Data - NA's (1)
 ```{r}
-summary(dados$Wind)
+summary(data$Wind)
 ```
 Exploring PlayGame Data
 ```{r}
-summary(dados$PlayGame)
-dados$PlayGame <- as.character(dados$PlayGame)
-dados$PlayGame[dados$PlayGame == "sim"] <- "Yes"
-dados$PlayGame[dados$PlayGame == "nao"] <- "No"
-dados$PlayGame <- factor(dados$PlayGame)
-dados$PlayGame
+summary(data$PlayGame)
+data$PlayGame <- as.character(data$PlayGame)
+data$PlayGame[data$PlayGame == "sim"] <- "Yes"
+data$PlayGame[data$PlayGame == "nao"] <- "No"
+data$PlayGame <- factor(data$PlayGame)
+data$PlayGame
 ```
 Data Cleaning - Weather | Wrong Weather Factor (1) | two modals -> decision: remove
 ```{r}
-unique(dados$Weather)
-summary(dados$Weather)
-dados <- subset(dados, Weather %in% c("Sunny", "Cloudy", "Rainy"))
-dados$Weather <- factor(dados$Weather)
+unique(data$Weather)
+summary(data$Weather)
+data <- subset(data, Weather %in% c("Sunny", "Cloudy", "Rainy"))
+data$Weather <- factor(data$Weather)
 ```
 Data Cleaning - Temperature | Outlier | Max Value: 130 (1)
 ```{r}
-summary(dados$Temperature)
-dados$Temperature[dados$Temperature > 130] <- median(dados$Temperature, na.rm = TRUE)
+summary(data$Temperature)
+data$Temperature[data$Temperature > 130] <- median(data$Temperature, na.rm = TRUE)
 ```
 Data Cleaning - Humidity | Outlier (1) | Max Value: 100
 ```{r}
-summary(dados$Humidity)
-dados$Humidity[dados$Humidity > 100] <- median(dados$Humidity, na.rm = TRUE)
-dados <- dados[!is.na(dados$Humidity), ]
+summary(data$Humidity)
+data$Humidity[data$Humidity > 100] <- median(data$Humidity, na.rm = TRUE)
+data <- data[!is.na(data$Humidity), ]
 ```
